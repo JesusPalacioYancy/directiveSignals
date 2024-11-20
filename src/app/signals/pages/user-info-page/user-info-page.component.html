@@ -1,0 +1,29 @@
+<h1>Información del usuario</h1>
+<hr>
+
+<div class="row">
+    <div class="col-4">
+        <h3>Usuario actual: {{ userId() }} </h3>
+
+        <button (click)="loadUser( userId() - 1 )" class="btn btn-primary">Anterior</button>
+        &nbsp;
+        <button (click)="loadUser( userId() + 1 )" class="btn btn-primary">Siguiente</button>
+
+    </div>
+
+    <div *ngIf="currendtUser()" class="col-8">
+        <h3>Usuario</h3>
+        <p>Correo: {{ currendtUser()!.email }}</p>
+        <p>Nombre: {{ currendtUser()!.first_name }} </p>
+        <p>Apellido: {{ currendtUser()!.last_name }}</p>
+
+        <img [src]="currendtUser()!.avatar" alt="Avatar">
+    </div>
+
+    <div class="col-8 text-danger">
+        <h3>Usuario no encontardo</h3>
+    </div>
+
+
+</div>
+
