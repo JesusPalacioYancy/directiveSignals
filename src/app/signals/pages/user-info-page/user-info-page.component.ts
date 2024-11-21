@@ -1,5 +1,5 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { UserServiceService } from '../../services/userService.service';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { UserService } from '../../services/userService.service';
 import { User } from '../../interfaces/user-request.interface';
 
 @Component({
@@ -8,27 +8,40 @@ import { User } from '../../interfaces/user-request.interface';
 })
 export class UserInfoPageComponent implements OnInit {
 
-  private usersService = inject(UserServiceService);
+  private usersService = inject(UserService);
   public userId = signal(1);
-
   public currendtUser = signal<User | undefined>(undefined);
   public userWasFound = signal(true);
 
+  public fullName = computed<string>( () => {
+    if(!this.currendtUser()) return 'Usauario Inexistente';
+    return `${this.currendtUser()!.first_name} ${this.currendtUser()!.last_name}`;
+  });
+
+  
   ngOnInit(): void {
     this.loadUser(this.userId());
   };
 
-  loadUser( id: number ) {
+  loadUser(id: number) {
     if( id <= 0 ) return;
-
     this.userId.set(id);
     this.currendtUser.set(undefined);
+    this.getUserService(id)
+  };
 
+  getUserService(id : number){
     this.usersService.getUserById(id)
-      .subscribe( user => 
-        this.currendtUser.set(user)
-      );
-
+    .subscribe({
+      next: (user) => {
+        this.currendtUser.set(user);
+        this.userWasFound.set(true);
+      },
+      error:() => {
+        this.userWasFound.set(false);
+        this.currendtUser.set(undefined);
+      }
+    });
   };
 
 };
