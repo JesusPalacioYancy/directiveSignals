@@ -10,13 +10,15 @@
             type="text"
             class="form-control mb-2"
             (input)="onFildUpdated('email', TxtEmail.value)"
+            [value]="user().email"
         >
 
         <input 
             #TxtFristName
             type="text"
             class="form-control mb-2"
-            (input)="onFildUpdated('frist_name', TxtFristName.value)"
+            (input)="onFildUpdated('first_name', TxtFristName.value)"
+            [value]="user().first_name"
         >
 
         <input 
@@ -24,6 +26,7 @@
             type="text"
             class="form-control mb-2"
             (input)="onFildUpdated('last_name', TxtLastName.value)"
+            [value]="user().last_name"
         >
 
 
@@ -31,9 +34,8 @@
 
     <div class="col-6">
         <!-- Data of user-->
-         <pre>
-            {{ 'asd' }}
-         </pre>
+        <pre> {{ user() | json }}</pre>
+        <pre>{{fullName()}}</pre>
     </div>
 
 </div>
