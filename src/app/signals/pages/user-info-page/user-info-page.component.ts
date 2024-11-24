@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, effect } from '@angular/core';
 import { UserService } from '../../services/userService.service';
 import { User } from '../../interfaces/user-request.interface';
 
@@ -18,9 +18,9 @@ export class UserInfoPageComponent implements OnInit {
     return `${this.currendtUser()!.first_name} ${this.currendtUser()!.last_name}`;
   });
 
-  
   ngOnInit(): void {
     this.loadUser(this.userId());
+    this.changeService
   };
 
   loadUser(id: number) {
@@ -43,5 +43,12 @@ export class UserInfoPageComponent implements OnInit {
       }
     });
   };
+
+  
+  public changeService = effect(() => { 
+    const user = this.currendtUser();
+    const status = this.userWasFound();
+    console.log(user, status);
+  });
 
 };
